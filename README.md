@@ -1,24 +1,23 @@
 # ✅ Backend Tech Stack
 
-Node.js + Express
+- Node.js + Express
 
-MongoDB with Mongoose
+- MongoDB with Mongoose
 
-Zod (schema validation)
+- Zod (schema validation)
 
-JWT Auth (access & refresh tokens)
+- JWT Auth (access & refresh tokens)
 
-Dotenv (for environment config)
+- Dotenv (for environment config)
 
-Multer (file uploads)
+- Multer (file uploads)
 
-Winston (logging)
+- Winston (logging)
 
 # 📁 Folder Structure
 
-bash
-Copy
-Edit
+```
+
 backend/
 ├── src/
 │ ├── config/ # DB config, JWT secret, etc.
@@ -35,10 +34,9 @@ backend/
 ├── .gitignore
 ├── package.json
 └── README.md
-📄 Sample README.md for Backend
-markdown
-Copy
-Edit
+📄 README.md for Backend
+
+```
 
 # 🧠 Inventory Management System – Backend
 
@@ -60,6 +58,7 @@ This is the backend for a robust, feature-rich Inventory Management System built
 
 ## 📁 Folder Structure
 
+```
 src/
 │
 ├── config/ # Environment configs
@@ -72,10 +71,9 @@ src/
 ├── validations/ # Zod schemas
 ├── app.js # Express app config
 └── server.js # Main entry point
-
-yaml
-Copy
-Edit
+readme.md
+package.json
+```
 
 ---
 
@@ -125,25 +123,29 @@ npm run dev
 
 # Production
 npm run start
-📫 API Endpoints (Example)
-Method	Route	Description
-POST	/api/auth/login	Login and get token
-GET	/api/products	Fetch products
-POST	/api/products	Add new product
-POST	/api/purchases	Create purchase
-POST	/api/sales	Create sale
-
-🧪 Future Additions
-Barcode/QR support
-
-Invoices (PDF)
-
-Realtime dashboard (Socket.io)
-
-Multi-warehouse support
-
-Activity logs
 ```
+
+# 📫 API Endpoints
+
+HTTP (Example)
+Method Route Description
+POST /api/auth/login Login and get token
+GET /api/products Fetch products
+POST /api/products Add new product
+POST /api/purchases Create purchase
+POST /api/sales Create sale
+
+# 🧪 Future Additions
+
+- Barcode/QR support
+
+- Invoices (PDF)
+
+- Realtime dashboard (Socket.io)
+
+- Multi-warehouse support
+
+- Activity logs
 
 # 🤝 Author
 
