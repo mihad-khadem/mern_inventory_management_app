@@ -8,3 +8,4 @@ const sendResponse = (res, data) => {
     data: data.data ?? null,
   });
 };
+export default sendResponse;

@@ -1,44 +1,4 @@
-# ✅ Backend Tech Stack
-
-- Node.js + Express
-
-- MongoDB with Mongoose
-
-- Zod (schema validation)
-
-- JWT Auth (access & refresh tokens)
-
-- Dotenv (for environment config)
-
-- Multer (file uploads)
-
-- Winston (logging)
-
-# 📁 Folder Structure
-
-```
-
-backend/
-├── src/
-│ ├── config/ # DB config, JWT secret, etc.
-│ ├── controllers/ # Route handlers
-│ ├── middlewares/ # Error, auth, validation
-│ ├── models/ # Mongoose schemas
-│ ├── routes/ # Express routers
-│ ├── services/ # Business logic
-│ ├── utils/ # Reusable helpers
-│ ├── validations/ # Zod schemas
-│ ├── app.js # App config
-│ └── server.js # Entry point
-├── .env
-├── .gitignore
-├── package.json
-└── README.md
-📄 README.md for Backend
-
-```
-
-# 🧠 Inventory Management System – Backend
+# 🧠 Vision for a Special Inventory System – Backend
 
 This is the backend for a robust, feature-rich Inventory Management System built with Node.js, Express, and MongoDB. It handles authentication, product management, stock tracking, purchases, sales, and more.
 
@@ -127,6 +87,8 @@ npm run start
 
 # 📫 API Endpoints
 
+```
+
 HTTP (Example)
 Method Route Description
 POST /api/auth/login Login and get token
@@ -134,6 +96,8 @@ GET /api/products Fetch products
 POST /api/products Add new product
 POST /api/purchases Create purchase
 POST /api/sales Create sale
+
+```
 
 # 🧪 Future Additions
 

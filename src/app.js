@@ -3,6 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 import ConnectDB from "./config/db.js";
 import dotenv from "dotenv";
+import routes from "./routes/index.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import notFound from "./middlewares/notFound.js";
 dotenv.config();
 // App
 const app = express();
@@ -16,11 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-// app.use("/api/v1", require("./routes/index.js"));
-// Error handling middleware (basic)
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Server Error" });
+// test route
+app.get("/", (req, res) => {
+  res.json({ message: "Inventory Management System API is working" });
 });
+app.use("/api/v1", routes);
+// Error handling middleware
+app.use(errorHandler);
+// not found route
+app.use(notFound);
 
 export default app;
