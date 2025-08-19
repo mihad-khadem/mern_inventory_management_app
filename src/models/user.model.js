@@ -15,10 +15,12 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false, // ❌ never return password unless explicitly selected
     },
     role: {
       type: String,
-      default: "user",
+      default: "staff",
+      enum: ["admin", "manager", "staff"],
     },
   },
   {

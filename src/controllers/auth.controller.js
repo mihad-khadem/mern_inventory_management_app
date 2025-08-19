@@ -4,10 +4,14 @@ import sendResponse from "../utils/sendResponse.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import {
+  comparePassword,
+  generateAccessToken,
+} from "../services/auth.service.js";
 
 // Register user
 const registerUser = catchAsync(async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -21,10 +25,10 @@ const registerUser = catchAsync(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await User.create({
-    name,
+    username,
     email,
     password: hashedPassword,
-    role: role || "user",
+    role: role || "staff",
   });
 
   user.password = undefined; // Exclude password from response
@@ -49,7 +53,7 @@ const loginUser = catchAsync(async (req, res) => {
     });
   }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await comparePassword(password, user.password);
   if (!isMatch) {
     return sendResponse(res, {
       status: httpStatus.UNAUTHORIZED,
@@ -58,12 +62,7 @@ const loginUser = catchAsync(async (req, res) => {
     });
   }
 
-  const token = jwt.sign(
-    { userId: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-
+  const token = generateAccessToken({ userId: user._id, role: user.role });
   user.password = undefined;
 
   sendResponse(res, {

@@ -1,21 +1,26 @@
-// Password Hashing
-export const HashedPassword = async (password) => {
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+// Hash password
+export const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
+  return bcrypt.hash(password, salt);
 };
 
+// Compare password
 export const comparePassword = async (password, hashedPassword) => {
-  return await bcrypt.compare(password, hashedPassword);
+  return bcrypt.compare(password, hashedPassword);
 };
 
-// Generate JWT
-export const generateTokens = (payload) => {
-  const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "15m",
-  });
-  const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+// Generate tokens
+export const generateAccessToken = (payload) => {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "7d",
   });
-  return { accessToken, refreshToken };
+};
+
+export const generateRefreshToken = (payload) => {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
 };

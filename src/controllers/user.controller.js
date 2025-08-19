@@ -1,5 +1,4 @@
 import httpStatus from "http-status";
-
 import userModel from "../models/user.model.js";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
@@ -8,7 +7,6 @@ import ApiError from "../error/apiError.js";
 // GET /api/users - Get all users
 const getAllUsers = catchAsync(async (req, res) => {
   const users = await userModel.find().select("-password");
-
   sendResponse(res, {
     success: true,
     status: httpStatus.OK,
@@ -20,11 +18,9 @@ const getAllUsers = catchAsync(async (req, res) => {
 // GET /api/users/:id - Get user by ID
 const getUserById = catchAsync(async (req, res) => {
   const user = await userModel.findById(req.params.id).select("-password");
-
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-
   sendResponse(res, {
     status: httpStatus.OK,
     message: "User fetched successfully",
@@ -35,7 +31,6 @@ const getUserById = catchAsync(async (req, res) => {
 // PATCH /api/users/:id - Update user
 const updateUser = catchAsync(async (req, res) => {
   const updates = req.body;
-
   const user = await userModel.findById(req.params.id);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
@@ -64,7 +59,12 @@ const deleteUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-
+  if (req.user.role !== "admin" && req.user._id.toString() !== req.params.id) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      "Not authorized to delete this user"
+    );
+  }
   sendResponse(res, {
     status: httpStatus.OK,
     message: "User deleted successfully",

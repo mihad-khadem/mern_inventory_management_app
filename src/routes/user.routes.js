@@ -5,18 +5,24 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user.controller.js";
-
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-// Protected routes (requires authentication)
+// ✅ All routes below require authentication
 router.use(authenticate);
 
-// Admin only routes (example of role-based)
+// ✅ Admin only can see all users
 router.get("/", authorize(["admin"]), getAllUsers);
+
+// ✅ Admin, manager, staff can see user by ID
 router.get("/:id", authorize(["admin", "manager", "staff"]), getUserById);
-router.patch("/:id", authorize(["admin", "manager"]), updateUser);
+
+// ✅ Update user: allow admins to update anyone,
+// and normal users can only update themselves
+router.patch("/:id", updateUser);
+
+// ✅ Delete user: admin only
 router.delete("/:id", authorize(["admin"]), deleteUser);
 
 export default router;

@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import { hashPassword, comparePassword } from "./auth.service.js";
-
+// User service
 /**
  * Create a new user
  * Throws error if email already exists
