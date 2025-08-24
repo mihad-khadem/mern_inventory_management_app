@@ -1,9 +1,9 @@
 import httpStatus from "http-status";
-import userModel from "../models/user.model.js";
+import userModel from "../models/user/user.model.js";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
 import ApiError from "../error/apiError.js";
-
+// user controller
 // GET /api/users - Get all users
 const getAllUsers = catchAsync(async (req, res) => {
   const users = await userModel.find().select("-password");
