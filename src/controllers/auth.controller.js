@@ -63,6 +63,7 @@ const loginUser = catchAsync(async (req, res) => {
   }
 
   const token = generateAccessToken({ userId: user._id, role: user.role });
+
   user.password = undefined;
 
   sendResponse(res, {

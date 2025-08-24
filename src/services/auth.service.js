@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import config from "../config/index.js";
 
 // Hash password
 export const hashPassword = async (password) => {
@@ -14,7 +15,7 @@ export const comparePassword = async (password, hashedPassword) => {
 
 // Generate tokens
 export const generateAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+  return jwt.sign(payload, config.jwtSecret, {
     expiresIn: "7d",
   });
 };

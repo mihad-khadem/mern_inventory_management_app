@@ -13,7 +13,7 @@ const router = express.Router();
 router.use(authenticate);
 
 // ✅ Admin only can see all users
-router.get("/", authorize(["admin"]), getAllUsers);
+router.get("/", authorize(["admin", "manager", "staff"]), getAllUsers);
 
 // ✅ Admin, manager, staff can see user by ID
 router.get("/:id", authorize(["admin", "manager", "staff"]), getUserById);
