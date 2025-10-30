@@ -2,10 +2,9 @@
 import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
-import { createUser, loginUser } from "../services/user/auth.service.js";
-
+import { createUser, loginUser } from "../services/auth/auth.service.js";
 // Register controller
-export const registerUser = catchAsync(async (req, res) => {
+export const createUserController = catchAsync(async (req, res) => {
   const { username, email, password, role } = req.body;
   const user = await createUser({ username, email, password, role });
 

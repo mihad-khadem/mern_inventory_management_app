@@ -23,10 +23,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({ message: "Inventory Management System API is working" });
 });
+// API routes
 app.use("/api/v1", routes);
-// Error handling middleware
-app.use(errorHandler);
 // not found route
 app.use(notFound);
+// Error handling middleware
+app.use(errorHandler);
 
 export default app;

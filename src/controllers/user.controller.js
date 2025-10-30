@@ -1,12 +1,12 @@
 import httpStatus from "http-status";
-import userModel from "../models/user/user.model.js";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
 import ApiError from "../error/apiError.js";
+import UserModel from "../models/user/user.model.js";
 // user controller
 // GET /api/users - Get all users
 const getAllUsers = catchAsync(async (req, res) => {
-  const users = await userModel.find().select("-password");
+  const users = await UserModel.find().select("-password");
   sendResponse(res, {
     success: true,
     status: httpStatus.OK,
@@ -17,7 +17,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 // GET /api/users/:id - Get user by ID
 const getUserById = catchAsync(async (req, res) => {
-  const user = await userModel.findById(req.params.id).select("-password");
+  const user = await UserModel.findById(req.params.id).select("-password");
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
@@ -31,7 +31,7 @@ const getUserById = catchAsync(async (req, res) => {
 // PATCH /api/users/:id - Update user
 const updateUser = catchAsync(async (req, res) => {
   const updates = req.body;
-  const user = await userModel.findById(req.params.id);
+  const user = await UserModel.findById(req.params.id);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
@@ -54,7 +54,7 @@ const updateUser = catchAsync(async (req, res) => {
 
 // DELETE /api/users/:id - Delete user
 const deleteUser = catchAsync(async (req, res) => {
-  const user = await userModel.findByIdAndDelete(req.params.id);
+  const user = await UserModel.findByIdAndDelete(req.params.id);
 
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");

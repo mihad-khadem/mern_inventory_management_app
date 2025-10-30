@@ -1,39 +1,10 @@
-import User from "../models/user.model.js";
-import { hashPassword, comparePassword } from "./auth.service.js";
+import User from "../../models/user/user.model.js";
+import { hashPassword, comparePassword } from "../auth/auth.service.js";
 // User service
 /**
  * Create a new user
  * Throws error if email already exists
  */
-const createUser = async ({ username, email, password, role }) => {
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw new Error("Email already in use");
-  }
-
-  const hashed = await hashPassword(password);
-  const user = new User({ username, email, password: hashed, role });
-  await user.save();
-  return user;
-};
-
-/**
- * Validate user credentials for login
- * Throws error if invalid
- */
-const validateUserCredentials = async (email, plainPassword) => {
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new Error("Invalid credentials");
-  }
-
-  const isValid = await comparePassword(plainPassword, user.password);
-  if (!isValid) {
-    throw new Error("Invalid credentials");
-  }
-
-  return user;
-};
 
 /**
  * Find user by ID
@@ -89,8 +60,6 @@ const deleteUser = async (id) => {
 };
 
 export default {
-  createUser,
-  validateUserCredentials,
   getUserById,
   getAllUsers,
   updateUser,
