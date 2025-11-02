@@ -31,8 +31,25 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },
+    refreshToken: { type: String, select: false },
+    passwordChangedAt: Date,
+    loginAttempts: {
+      type: Number,
+      default: 0,
+    },
+    lockUntil: {
+      type: Date,
+    },
+    // isLocked: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     // For multi-tenant
     company: {
       type: String,
@@ -44,3 +61,8 @@ const UserSchema = new mongoose.Schema(
 
 const UserModel = mongoose.model("User", UserSchema);
 export default UserModel;
+
+// Virtual to check if account is locked
+// UserSchema.virtual("isLocked").get(function () {
+//   return !!(this.lockUntil && this.lockUntil > Date.now());
+// });
