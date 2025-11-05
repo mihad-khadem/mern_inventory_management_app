@@ -24,10 +24,26 @@ export const loginUserController = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const { user, token } = await loginUser({ email, password });
 
+  // --- Set cookies ---
+  res.cookie("accessToken", token.accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // only HTTPS in prod
+    sameSite: "strict", // prevents CSRF
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+
+  res.cookie("refreshToken", token.refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+
+  // --- Optional: remove tokens from response to avoid client storage ---
   sendResponse(res, {
     status: httpStatus.OK,
     message: "Login successful",
-    data: { user, token },
+    data: { user },
   });
 });
 

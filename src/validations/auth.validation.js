@@ -2,8 +2,8 @@ import User from "../models/user/user.model.js";
 import ApiError from "../error/apiError.js";
 import config from "../config/index.js";
 import { comparePassword } from "../services/auth/auth.service.js";
-import bcrypt from "bcryptjs";
 
+// Validate user credentials
 export const validateUserCredentials = async (email, password) => {
   const user = await User.findOne({ email }).select(
     "+password +loginAttempts +lockUntil +isBlocked"
@@ -20,14 +20,7 @@ export const validateUserCredentials = async (email, password) => {
       `Account locked. Try again in ${minutesLeft} minute(s).`
     );
   }
-  // todo : check password camparesion, plain and hashed
-  const match = await bcrypt.compare(password, user.password);
-  console.log("match", match);
 
-  if (!match) {
-    await handleFailedLogin(user);
-    throw new ApiError(401, "Invalid credentials");
-  }
   const isMatch = await comparePassword(password, user.password);
   if (!isMatch) {
     await handleFailedLogin(user);
@@ -52,4 +45,13 @@ const resetLoginAttempts = async (user) => {
   user.loginAttempts = 0;
   user.lockUntil = undefined;
   await user.save({ validateBeforeSave: false });
+};
+
+// cookie validation function
+export const validateAuthCookies = async (accessToken, refreshToken) => {
+  // Implement your token validation logic here
+  // For example, decode and verify JWT tokens
+  if (!accessToken || !refreshToken) {
+    throw new ApiError(401, "Authentication cookies are missing");
+  }
 };
