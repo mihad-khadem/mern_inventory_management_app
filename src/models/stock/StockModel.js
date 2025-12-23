@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Stock Model Schema
 const stockSchema = new mongoose.Schema(
   {
     companyId: {

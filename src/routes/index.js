@@ -1,6 +1,7 @@
 import express from "express";
 import authRoute from "./auth.routes.js";
 import userRoute from "./user.routes.js";
+import auditRoute from "./audit/audit.routes.js";
 
 const router = express.Router();
 // Global routes handlers
@@ -12,6 +13,10 @@ const moduleRoutes = [
   {
     path: "/auth",
     route: authRoute,
+  },
+  {
+    path: "/audit",
+    route: auditRoute,
   },
 ];
 
