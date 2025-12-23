@@ -1,43 +1,57 @@
 import AuditLogModel from "../../models/audit/auditLog.model.js";
+import ApiError from "../../error/apiError.js";
 
-// audit service for logging user activities
 class AuditService {
+  /**
+   * Create a new audit log entry
+   * Never break business flow if logging fails
+   */
   async createLogEntry(payload) {
     try {
       return await AuditLogModel.create(payload);
     } catch (err) {
-      // DO NOT BREAK BUSINESS FLOW
       console.error("Audit log failed:", err.message);
-      return null;
+      return null; // do not throw
     }
   }
 
-  async getLogs(filter = {}, options = {}) {
+  /**
+   * Query audit logs with filters, pagination, sorting, and population
+   */
+  async queryAuditLogs(filter = {}, options = {}) {
+    const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
+
     try {
-      return await AuditLogModel.find(filter, null, options).sort({
-        createdAt: -1,
-      });
+      const [logs, total] = await Promise.all([
+        AuditLogModel.find(filter)
+          .populate("userId", "name email role")
+          .sort(sort)
+          .skip(skip)
+          .limit(limit)
+          .lean(),
+        AuditLogModel.countDocuments(filter),
+      ]);
+
+      return { logs, total };
     } catch (err) {
-      throw new ApiError(500, "Failed to retrieve audit logs");
+      throw new ApiError(500, "Failed to query audit logs");
     }
   }
 
+  /**
+   * Get logs for a specific company
+   */
   async getLogsByCompany(companyId, filter = {}, options = {}) {
     try {
-      return await AuditLogModel.find({ companyId, ...filter }, null, options)
+      const companyFilter = { companyId, ...filter };
+      const logs = await AuditLogModel.find(companyFilter, null, options)
         .populate("userId", "name email role")
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .lean();
+      return logs;
     } catch (err) {
       throw new ApiError(500, "Failed to retrieve company audit logs");
     }
-  }
-  async queryAuditLogs(filter = {}, options = {}) {
-    const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
-    return AuditLogModel.find(filter)
-      .populate("userId", "name email role")
-      .sort(sort)
-      .skip(skip)
-      .limit(limit);
   }
 }
 
