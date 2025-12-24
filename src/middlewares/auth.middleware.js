@@ -53,3 +53,18 @@ export const authorize = (allowedRoles = []) =>
     }
     next();
   });
+// Authorize based on permissions
+export const requirePermission = (permission) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const allowed = ROLE_PERMISSIONS[req.user.role] || [];
+    if (!allowed.includes(permission)) {
+      throw new ApiError(httpStatus.FORBIDDEN, "Permission denied");
+    }
+
+    next();
+  };
+};

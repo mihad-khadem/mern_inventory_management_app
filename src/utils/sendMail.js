@@ -1,9 +1,9 @@
 // send mail utility functions
 
-const nodemailer = require("nodemailer");
-import config from "../config";
-import ApiError from "../error/apiError";
-import catchAsync from "./catchAsync";
+import nodemailer from "nodemailer";
+import config from "../config/index.js";
+import ApiError from "../error/apiError.js";
+import catchAsync from "./catchAsync.js";
 import httpStatus from "http-status";
 
 const sendMail = catchAsync(async (to, subject, body) => {

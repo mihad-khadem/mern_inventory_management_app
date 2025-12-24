@@ -52,6 +52,7 @@ export const resetPassword = async (token, newPassword) => {
 
   return {
     user: {
+      _id: user._id,
       userId: user.userId,
       username: user.username,
       email: user.email,
