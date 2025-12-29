@@ -1,0 +1,80 @@
+graph TD
+%% Users & Frontends
+POS[POS App] --> API[RetailOS API]
+ECOM[Web Store] --> API
+ADMIN[Ecom Admin] --> API
+SUPER[Super Admin] --> API
+
+%% Core Services
+API --> AUTH[Auth & RBAC]
+API --> CORE[Core Services]
+CORE --> DB[(MongoDB)]
+CORE --> REDIS[(Redis)]
+CORE --> AI[AI Engine]
+
+%% Database Collections
+DB --> COMPANY[Company]
+DB --> USER[User]
+DB --> ROLE[Role]
+DB --> PERMISSION[Permission]
+DB --> PRODUCT[Product]
+DB --> PRODUCT_VARIANT[Product Variant]
+DB --> STOCK[Stock]
+DB --> ORDER[Order]
+DB --> ORDER_ITEM[Order Item]
+DB --> CUSTOMER[Customer]
+DB --> SUPPLIER[Supplier]
+DB --> PURCHASE[Purchase]
+DB --> PURCHASE_ITEM[Purchase Item]
+DB --> TRANSACTION[Transaction]
+DB --> AUDITLOG[Audit Log]
+
+%% POS Flow
+POS --> ORDER_FLOW[POS Order Flow]
+ORDER_FLOW --> STOCK
+ORDER_FLOW --> TRANSACTION
+ORDER_FLOW --> AUDITLOG
+
+%% Ecommerce Flow
+ECOM --> ECOM_ORDER[Online Order Flow]
+ECOM_ORDER --> STOCK
+ECOM_ORDER --> TRANSACTION
+ECOM_ORDER --> AUDITLOG
+
+%% Purchases & Supplier Flow
+ADMIN --> PURCHASE_FLOW[Purchase Flow]
+PURCHASE_FLOW --> STOCK
+PURCHASE_FLOW --> TRANSACTION
+PURCHASE_FLOW --> AUDITLOG
+
+%% AI & Automations
+AI --> Reorder[Auto Purchase Order]
+AI --> DynamicPricing[Dynamic Pricing]
+AI --> FraudDetection[Fraud Alerts]
+AI --> CustomerChurn[Retention Actions]
+AI --> AutoPromotions[Auto Promotions]
+
+STOCK --> AI
+ORDER --> AI
+ORDER_ITEM --> AI
+CUSTOMER --> AI
+SUPPLIER --> AI
+PURCHASE --> AI
+PURCHASE_ITEM --> AI
+TRANSACTION --> AI
+AUDITLOG --> AI
+
+%% Automation engine triggers
+AI --> Automation[Automation Rules Engine]
+Automation --> SendSMS[Payment Reminder]
+Automation --> LockStaff[Staff Fraud Lock]
+Automation --> ApplyDiscount[Old Stock Discount]
+Automation --> NotifyManager[Low Stock Alert]
+Automation --> UpdatePrices[Auto Price Sync]
+
+%% Real-time updates
+Reorder --> PURCHASE
+DynamicPricing --> PRODUCT
+FraudDetection --> AUDITLOG
+CustomerChurn --> CUSTOMER
+AutoPromotions --> PRODUCT
